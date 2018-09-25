@@ -127,6 +127,10 @@ public class TabellListe<T> implements Liste<T> {
         return "" + stringJoiner;
     }
 
+    public void fjernHvis() {
+
+    }
+
 
     private class TabellListeIterator implements Iterator<T> {
         private int denne = 0;       // instansvariabel
@@ -136,11 +140,34 @@ public class TabellListe<T> implements Liste<T> {
             return denne < antall;     // sjekker verdien til denne
         }
 
-        public T next()              // returnerer aktuell verdi
+        private boolean fjernOK = false;   // ny instansvariabel i TabellListeIterator
+
+        public T next()                    // ny versjon
         {
             if (!hasNext())
                 throw new NoSuchElementException("Tomt eller ingen verdier igjen!");
-            return a[denne++];
+
+            T denneVerdi = a[denne];   // henter aktuell verdi
+            denne++;                   // flytter indeksen
+            fjernOK = true;            // nå kan remove() kalles
+
+            return denneVerdi;         // returnerer verdien
+        }
+
+        public void remove()         // ny versjon
+        {
+            if (!fjernOK) throw
+                    new IllegalStateException("Ulovlig tilstand!");
+
+            fjernOK = false;           // remove() kan ikke kalles på nytt
+
+            // verdien i denne - 1 skal fjernes da den ble returnert i siste kall
+            // på next(), verdiene fra og med denne flyttes derfor en mot venstre
+            antall--;           // en verdi vil bli fjernet
+            denne--;            // denne må flyttes til venstre
+
+            System.arraycopy(a, denne + 1, a, denne, antall - denne);  // tetter igjen
+            a[antall] = null;   // verdien som lå lengst til høyre nulles
         }
     }
 
