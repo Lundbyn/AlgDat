@@ -12,7 +12,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Main.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="289">
@@ -38,6 +38,8 @@
                 <element signature="e#2823#2824#0" expanded="true" />
                 <element signature="e#2865#2866#0" expanded="true" />
                 <element signature="e#2937#2938#0" expanded="true" />
+                <element signature="e#3893#3894#0" expanded="true" />
+                <element signature="e#3941#3942#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -65,7 +67,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Liste.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Liste.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Liste.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="442">
@@ -297,7 +299,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="6253000" />
+    <option name="totallyTimeSpent" value="6279000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -366,6 +368,8 @@
             <element signature="e#2823#2824#0" expanded="true" />
             <element signature="e#2865#2866#0" expanded="true" />
             <element signature="e#2937#2938#0" expanded="true" />
+            <element signature="e#3893#3894#0" expanded="true" />
+            <element signature="e#3941#3942#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -427,6 +431,8 @@
             <element signature="e#2823#2824#0" expanded="true" />
             <element signature="e#2865#2866#0" expanded="true" />
             <element signature="e#2937#2938#0" expanded="true" />
+            <element signature="e#3893#3894#0" expanded="true" />
+            <element signature="e#3941#3942#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -449,6 +455,14 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="17" column="0" lean-forward="true" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/TabellListe.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="334">
@@ -464,6 +478,8 @@
             <element signature="e#2823#2824#0" expanded="true" />
             <element signature="e#2865#2866#0" expanded="true" />
             <element signature="e#2937#2938#0" expanded="true" />
+            <element signature="e#3893#3894#0" expanded="true" />
+            <element signature="e#3941#3942#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -490,14 +506,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="442">
           <caret line="26" column="5" lean-forward="true" selection-start-line="26" selection-start-column="5" selection-end-line="26" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="17" column="0" lean-forward="true" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
           <folding />
         </state>
       </provider>
