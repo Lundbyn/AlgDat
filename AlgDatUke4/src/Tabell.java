@@ -13,8 +13,6 @@ public class Tabell {
         a[j] = temp;
     }
 
-
-
     public static int[] randPerm(int n)  // en effektiv versjon
     {
         Random r = new Random();         // en randomgenerator
@@ -31,8 +29,6 @@ public class Tabell {
         return a;                        // permutasjonen returneres
     }
 
-
-
     public static void randPerm(int[] a)  // stokker om a
     {
         Random r = new Random();     // en randomgenerator
@@ -43,7 +39,6 @@ public class Tabell {
             bytt(a,k,i);
         }
     }
-
 
     public static int maks(int[] a, int fra, int til)
     {
@@ -77,7 +72,6 @@ public class Tabell {
         return maks(a,0,a.length);     // kaller metoden over
     }
 
-
     public static void skriv(int[] a, int fra, int til) {
         for(int i = fra; i < til; ++i) {
             if(i == til - 1) {
@@ -89,12 +83,9 @@ public class Tabell {
         }
     }
 
-
     public static void skriv(int[] a){
         skriv(a, 0, a.length);
     }
-
-
 
     public static int min(int[] a, int fra, int til) {
 
@@ -110,7 +101,6 @@ public class Tabell {
         return m;
     }
 
-
     public static void bytt(char[] c, int i, int j) {
         char temp = c[i];
         c[i] = c[j];
@@ -124,13 +114,9 @@ public class Tabell {
         }
     }
 
-
     public static void skrivln(int[] a){
         skrivln(a, 0, a.length);
     }
-
-
-
 
     public static void fratilKontroll(int tablengde, int fra, int til)
     {
@@ -147,7 +133,6 @@ public class Tabell {
                     ("fra(" + fra + ") > til(" + til + ") - illegalt intervall!");
     }
 
-
     public static void vhKontroll(int tablengde, int v, int h)
     {
         if (v < 0)
@@ -161,7 +146,6 @@ public class Tabell {
             throw new IllegalArgumentException
                     ("v = " + v + ", h = " + h);
     }
-
 
     public static void snu(int[] a, int v, int h) {
         vhKontroll(a.length, v, h);
@@ -177,8 +161,6 @@ public class Tabell {
     public static void snuHelTabell(int[] a) {
         snu(a, 0, a.length - 1);
     }
-
-
 
     public static int[] nestMaks(int[] a)  // legges i class Tabell
     {
@@ -209,7 +191,6 @@ public class Tabell {
         return new int[] {m,nm};      // m i posisjon 0 , nm i posisjon 1
 
     }
-
 
     public static int[] nestMaksv2(int[] a)  // legges i class Tabell
     {
@@ -260,9 +241,6 @@ public class Tabell {
         }
         return a;
     }
-
-
-
     //1.2.13 a)
     public static int[] nestMaksv3(int[] a)   // en turnering
     {
@@ -289,14 +267,12 @@ public class Tabell {
         return new int[] {maksverdi,nestmaksverdi}; // størst og nest størst
     } // nestMaks
 
-
     public static void kopier(int[] a, int i, int[] b, int j, int ant) {
 
         for(int n = i + ant; i < n;) {
             b[j++] = a[i++];
         }
     }
-
 
     public static int maks(double[] a)     // legges i class Tabell
     {
@@ -352,4 +328,50 @@ public class Tabell {
         }
     }
 
+    static void skriv(Object[] a, int fra, int til) {
+        for(int i = fra; i < til && i < a.length; i++) {
+            System.out.print(a[i] + " ");
+        }
+    }
+
+    static void skriv(Object[] a) {
+        for (int i = 0; i < a.length; i++) {
+            System.out.print(a[i] + " ");
+        }
+    }
+
+    static void skrivln(Object[] a, int fra, int til) {
+        for(int i = fra; i < til && i < a.length; i++) {
+            System.out.println(a[i]);
+        }
+        System.out.println();
+    }
+
+    static void skrivln(Object[] a) {
+        for (int i = 0; i < a.length; i++) {
+            System.out.println(a[i]);
+        }
+        System.out.println();
+    }
+
+    static void bytt(Object[] a, int i, int j) {
+        Object tmp = a[i];
+        a[i] = a[j];
+        a[j] = tmp;
+    }
+
+    public static Integer[] randPermInteger(int n)
+    {
+        Integer[] a = new Integer[n];               // en Integer-tabell
+        Arrays.setAll(a, i -> i + 1);               // tallene fra 1 til n
+
+        Random r = new Random();   // hentes fra  java.util
+
+        for (int k = n - 1; k > 0; k--)
+        {
+            int i = r.nextInt(k+1);  // tilfeldig tall fra [0,k]
+            bytt(a,k,i);             // bytter om
+        }
+        return a;  // tabellen med permutasjonen returneres
+    }
 }
