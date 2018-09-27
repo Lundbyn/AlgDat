@@ -107,9 +107,6 @@ public class EnkeltLenketListe<T> implements Liste<T>
     @Override
     public int antall()
     {
-        while (){
-            hode.getNeste();
-        }
         throw new UnsupportedOperationException("Ikke laget ennå!");
     }
 

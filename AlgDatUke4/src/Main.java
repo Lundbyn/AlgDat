@@ -1,10 +1,12 @@
+import java.util.Arrays;
+
 public class Main {
 
     public static void main(String[] args) {
 
-        EnkeltLenketListe<String> liste = new EnkeltLenketListe();
-
-        liste.antall();
+        String[] s = {"Per","Kari","Ole","Anne","Ali","Eva"};
+        Tabell.innsettingssortering(s);
+        System.out.println(Arrays.toString(s));
     }
 
 }
