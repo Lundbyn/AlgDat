@@ -5,7 +5,8 @@ public enum Studium  // legges under package eksempelklasser
     Data ("Ingeniørfag - data"),         // enumkonstanten Data
     IT ("Informasjonsteknologi"),        // enumkonstanten IT
     Anvendt ("Anvendt datateknologi"),   // enumkonstanten Anvendt
-    Enkeltemne ("Enkeltemnestudent");    // enumkonstanten Enkeltemne
+    Enkeltemne ("Enkeltemnestudent"),    // enumkonstanten Enkeltemne
+    Elektro ("Ingeniørfag - elektronikk og informasjonsteknologi");
 
     private final String fulltnavn;      // instansvariabel
     private Studium(String fulltnavn) { this.fulltnavn = fulltnavn; }
