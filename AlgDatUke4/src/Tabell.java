@@ -1,6 +1,7 @@
 import eksempelklasser.Komparator;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.NoSuchElementException;
 import java.util.Random;
 
@@ -356,11 +357,6 @@ public class Tabell {
         System.out.println();
     }
 
-    static void bytt(Object[] a, int i, int j) {
-        Object tmp = a[i];
-        a[i] = a[j];
-        a[j] = tmp;
-    }
 
     public static Integer[] randPermInteger(int n)
     {
@@ -378,7 +374,7 @@ public class Tabell {
     }
 
 
-    public static <T> void innsettingssortering(T[] a, Komparator<? super T> c)
+    public static <T> void innsettingssortering(T[] a, Comparator<? super T> c)
     {
         for (int i = 1; i < a.length; i++)  // starter med i = 1
         {
@@ -391,4 +387,143 @@ public class Tabell {
             a[j + 1] = verdi;      // j + 1 er rett sortert plass
         }
     }
+
+    public static <T> int maks(T[] a, Comparator<? super T> c) {
+        int maks = 0;
+        T maksVerdi = a[0];
+        for(int i = 1; i < a.length; i++) {
+            if(c.compare(a[i], maksVerdi) > 0) {
+                maks = i;
+                maksVerdi = a[i];
+            }
+        }
+        return maks;
+    }
+
+
+    //Comparator metoder
+
+    public static <T> void bytt(T[] a, int i, int j) {
+        T temp = a[i];
+        a[i] = a[j];
+        a[j] = temp;
+    }
+
+    public static <T> int min(T[] a, int fra, int til, Comparator<? super T> c) {
+
+        int min = fra;
+        T minVerdi = a[fra];
+
+        for(int i = fra + 1; i < til; i++) {
+            if(c.compare(a[i], minVerdi) < 0) {
+                minVerdi = a[i];
+                min = i;
+            }
+        }
+        return min;
+    }
+
+    public static <T> void utvalgssortering(T[] a, Comparator<? super T> c)
+    {
+        for (int i = 0; i < a.length - 1; i++)
+            bytt(a, i, min(a, i, a.length, c));
+    }
+
+    public static <T> int binærsøk(T[] a, int fra, int til, T verdi, Comparator<? super T> c)
+    {
+        Tabell.fratilKontroll(a.length,fra,til);  // se Programkode 1.2.3 a)
+        int v = fra, h = til - 1;    // v og h er intervallets endepunkter
+
+        while (v <= h)  // fortsetter så lenge som a[v:h] ikke er tom
+        {
+            int m = (v + h)/2;     // heltallsdivisjon - finner midten
+            T midtverdi = a[m];  // hjelpevariabel for  midtverdien
+
+            int cmp = c.compare(verdi, midtverdi);
+
+            if (cmp > 0) v = m + 1;        // verdi i a[m+1:h]
+            else if (cmp < 0) h = m - 1;   // verdi i a[v:m-1]
+            else return m; // funnet
+        }
+
+        return -(v + 1);   // ikke funnet, v er relativt innsettingspunkt
+    }
+
+    public static <T> void kvikksortering0(T[] a, int v, int h, Comparator<? super T> c)  // en privat metode
+    {
+        if (v >= h) return;  // a[v:h] er tomt eller har maks ett element
+        int k = sParter0(a, v, h, (v + h)/2, c);  // bruker midtverdien
+        kvikksortering0(a, v, k - 1, c);     // sorterer intervallet a[v:k-1]
+        kvikksortering0(a, k + 1, h, c);     // sorterer intervallet a[k+1:h]
+    }
+
+    private static <T> int sParter0(T[] a, int v, int h, int indeks, Comparator<? super T> c)
+    {
+        bytt(a, indeks, h);           // skilleverdi a[indeks] flyttes bakerst
+        int pos = parter0(a, v, h - 1, a[h], c);  // partisjonerer a[v:h − 1]
+        bytt(a, pos, h);              // bytter for å få skilleverdien på rett plass
+        return pos;                   // returnerer posisjonen til skilleverdien
+    }
+
+    private static <T> int parter0(T[] a, int v, int h, T skilleverdi, Comparator<? super T> c)
+    {
+        while (true)                                  // stopper når v > h
+        {
+            while (v <= h && c.compare(a[v], skilleverdi) < 0) v++;   // h er stoppverdi for v
+            while (v <= h && c.compare(a[v], skilleverdi) >= 0) h--;  // v er stoppverdi for h
+
+            if (v < h) bytt(a,v++,h--);                 // bytter om a[v] og a[h]
+            else  return v;  // a[v] er nåden første som ikke er mindre enn skilleverdi
+        }
+    }
+
+    public static <T> void flettesortering(T[] a, Comparator<? super T> c)
+    {
+        T[] b = Arrays.copyOf(a,a.length/2);   // en hjelpetabell for flettingen
+        flettesortering(a,b,0,a.length, c);          // kaller metoden over
+    }
+
+    private static <T> void flettesortering(T[] a, T[] b, int fra, int til, Comparator<? super T> c)
+    {
+        if (til - fra <= 1) return;   // a[fra:til> har maks ett element
+        int m = (fra + til)/2;        // midt mellom fra og til
+
+        flettesortering(a,b,fra,m, c);   // sorterer a[fra:m>
+        flettesortering(a,b,m,til, c);   // sorterer a[m:til>
+
+        if (c.compare(a[m-1], a[m]) > 0) {
+            flett(a,b,fra,m,til, c);  // fletter a[fra:m> og a[m:til>
+        }
+    }
+
+    public static <T> void flett(T[] a, T[] b, int fra, int m, int til, Comparator<? super T> c) {
+        int n = m - fra;
+        for(int i = 0; i < n; ++i) {
+            b[i] = a[i + fra];
+        }
+
+        int i = 0;
+        int j = m;
+        int k = fra;
+
+        while (i < n && j < til) {
+            if(c.compare(b[i], a[j]) <= 0) {
+                a[k] = b[i];
+                i++;
+
+            }
+            else {
+                a[k] = a[j];
+                j++;
+            }
+            k++;
+        }
+
+        while (i < n) {
+            a[k] = b[i];
+            k++;
+            i++;
+        }
+    }
+
 }
