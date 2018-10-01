@@ -1,5 +1,6 @@
 import eksempelklasser.*;
 
+import java.awt.*;
 import java.util.Arrays;
 import java.util.Comparator;
 
@@ -98,6 +99,26 @@ public class Main {
 
         //Integer[] tabell = {1,0,4,6,29,4,68,2,3,6,4,3,6,4};
 
+
+        Dato[] d = new Dato[5];           // en datotabell
+        d[0] = new Dato(24,12,2014);      // 24/12-2014
+        d[1] = new Dato(24,12,2012);      // 24/12-2012
+        d[2] = new Dato(9,12,2013);       // 9/12-2013
+        d[3] = new Dato(25,12,2012);      // 25/12-2012
+        d[4] = new Dato(10,12,2013);      // 10/12-2013
+
+        Tabell.innsettingssortering(d);
+        for (Dato x : d) System.out.print(x + " ");
+
+        // Utskrift: 24/12-2012 25/12-2012 9/12-2013 10/12-2013 24/12-2014
+
+        Klokkeslett[] k = new Klokkeslett[4];
+        k[0] = new Klokkeslett("00:15");
+        k[1] = new Klokkeslett("23:59");
+        k[2] = new Klokkeslett("13:45");
+        k[3] = new Klokkeslett("00:00");
+        Tabell.innsettingssortering(k);
+        System.out.println(Arrays.toString(k));
 
     }
 }
