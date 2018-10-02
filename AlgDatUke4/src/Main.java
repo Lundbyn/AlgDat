@@ -95,7 +95,7 @@ public class Main {
         Comparator<String> c =  Comparator.comparing(String::length);  // etter lengde
         Tabell.innsettingssortering(s, c.thenComparing(x -> x));       // vanlig orden
         System.out.println(Arrays.toString(s));
-        */
+
 
         //Integer[] tabell = {1,0,4,6,29,4,68,2,3,6,4,3,6,4};
 
@@ -119,6 +119,10 @@ public class Main {
         k[3] = new Klokkeslett("00:00");
         Tabell.innsettingssortering(k);
         System.out.println(Arrays.toString(k));
+        */
+
+        //Kap 3
+        //Oppgave ..
 
     }
 }
