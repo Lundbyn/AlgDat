@@ -1,7 +1,11 @@
 package hjelpeklasser;
 
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 public class EnkeltLenketListe<T> implements Liste<T>
 {
@@ -17,9 +21,9 @@ public class EnkeltLenketListe<T> implements Liste<T>
         }
     }  // Node
 
-    private Node<T> hode, hale;  // pekere til første og siste node
-
-    private int antall;          // antall verdier/noder i listen
+    private Node<T> hode, hale;   // pekere til første og siste node
+    private int antall;           // antall verdier/noder i listen
+    private int endringer;  // endringer i listen
 
     private Node<T> finnNode(int indeks)
     {
@@ -32,6 +36,7 @@ public class EnkeltLenketListe<T> implements Liste<T>
     {
         hode = hale = null;        // hode og hale til null
         antall = 0;                // ingen verdier - listen er tom
+        endringer = 0;       // ingen endringer når vi starter
     }
 
     public EnkeltLenketListe(T[] a)
@@ -58,8 +63,9 @@ public class EnkeltLenketListe<T> implements Liste<T>
         if (antall == 0)  hode = hale = new Node<>(verdi, null);  // tom liste
         else hale = hale.neste = new Node<>(verdi, null);         // legges bakerst
 
-        antall++;        // en mer i listen
-        return true;     // vellykket innlegging
+        endringer++;    // innlegging er en endring
+        antall++;             // en mer i listen
+        return true;          // vellykket innlegging
     }
 
     @Override
@@ -86,7 +92,8 @@ public class EnkeltLenketListe<T> implements Liste<T>
             p.neste = new Node<>(verdi, p.neste);  // verdi settes inn i listen
         }
 
-        antall++;                            // listen har fått en ny verdi
+        endringer++;    // innlegging er en endring
+        antall++;             // listen har fått en ny verdi
     }
 
     @Override
@@ -128,6 +135,8 @@ public class EnkeltLenketListe<T> implements Liste<T>
         T gammelVerdi = p.verdi;
 
         p.verdi = verdi;
+        endringer++;    // oppdatering er en endring
+
         return gammelVerdi;
     }
 
@@ -157,6 +166,7 @@ public class EnkeltLenketListe<T> implements Liste<T>
             p.neste = q.neste;                 // "hopper over" q
         }
 
+        endringer++;                   // fjerning er en endring
         antall--;                            // reduserer antallet
 
         return temp;                         // returner fjernet verdi
@@ -184,6 +194,7 @@ public class EnkeltLenketListe<T> implements Liste<T>
         q.verdi = null;                           // nuller verdien til q
         q.neste = null;                           // nuller nestepeker
 
+        endringer++;                        // fjerning er en endring
         antall--;                                 // en node mindre i listen
 
         return true;                              // vellykket fjerning
@@ -215,13 +226,9 @@ public class EnkeltLenketListe<T> implements Liste<T>
         }
 
         hode = hale = null;
-        antall = 0;
-    }
 
-    @Override
-    public Iterator<T> iterator()
-    {
-        throw new UnsupportedOperationException("Ikke laget ennå!");
+        endringer++;    // nullstilling er en endring
+        antall = 0;           // antall lik 0 i en tom liste
     }
 
     @Override
@@ -250,4 +257,124 @@ public class EnkeltLenketListe<T> implements Liste<T>
         return s.toString();
     }
 
-}
+    @Override
+    public Iterator<T> iterator()
+    {
+        return new EnkeltLenketListeIterator();
+    }
+
+    private class EnkeltLenketListeIterator implements Iterator<T>
+    {
+        private Node<T> p = hode;         // p starter på den første i listen
+        private boolean fjernOK = false;  // blir sann når next() kalles
+        private int iteratorendringer = endringer;  // startverdi
+
+        @Override
+        public boolean hasNext()
+        {
+            return p != null;  // p er ute av listen hvis den har blitt null
+        }
+
+        @Override
+        public T next()
+        {
+            if (endringer != iteratorendringer)
+                throw new ConcurrentModificationException("Listen er endret!");
+
+            if (!hasNext()) throw new
+                    NoSuchElementException("Tomt eller ingen verdier igjen!");
+
+            fjernOK = true;            // nå kan remove() kalles
+
+            T denneVerdi = p.verdi;    // tar vare på verdien i p
+            p = p.neste;               // flytter p til den neste noden
+
+            return denneVerdi;         // returnerer verdien
+        }
+
+        @Override
+        public void remove()
+        {
+            if (endringer != iteratorendringer)
+                throw new ConcurrentModificationException("Listen er endret!");
+
+
+            if (!fjernOK) throw new IllegalStateException("Ulovlig tilstand!");
+
+            fjernOK = false;               // remove() kan ikke kalles på nytt
+            Node<T> q = hode;              // hjelpepeker
+
+            if (hode.neste == p)           // skal den første fjernes?
+            {
+                hode = hode.neste;           // den første fjernes
+                if (p == null) hale = null;  // dette var den eneste noden
+            }
+            else
+            {
+                Node<T> r = hode;            // må finne forgjengeren
+                // til forgjengeren til p
+                while (r.neste.neste != p)
+                {
+                    r = r.neste;               // flytter r
+                }
+
+                q = r.neste;                 // det er q som skal fjernes
+                r.neste = p;                 // "hopper" over q
+                if (p == null) hale = r;     // q var den siste
+            }
+
+            q.verdi = null;                // nuller verdien i noden
+            q.neste = null;                // nuller nestepeker
+
+            endringer++;             // en endring i listen
+            iteratorendringer++;    // en endring av denne iteratoren
+            antall--;                      // en node mindre i listen
+        }
+
+        public boolean fjerHvis(Predicate<? super T> predicate) {
+
+            int antallFjernet = 0;
+
+            Node<T> p = hode;
+            Node<T> q = null;
+
+            while (p != null) {
+                if(predicate.test(p.verdi)) {
+                    antallFjernet++;
+                    if(p == hode) {
+                        if(p == hale) {
+                            hale = null;
+                        }
+                        hode = hode.neste;
+                    }
+                    else if(p == hale) {
+                        q.neste = null;
+                    }
+                    else {
+                        q.neste = p.neste;
+                    }
+                }
+                q = p;
+                p = p.neste;
+            }
+            antall -= antallFjernet;
+            return antallFjernet > 0;
+        }
+
+        public void forEach(Consumer<? super T> c) {
+            Node<T> p = hode;
+            while (p != null) {
+                c.accept(p.verdi);
+                p = p.neste;
+            }
+        }
+
+        public void forEachRemaining(Consumer<? super T> c) {
+            while (p != null) {
+                c.accept(p.verdi);
+                p = p.neste;
+            }
+        }
+    } // EnkeltLenketListeIterator
+
+}  // EnkeltLenketListe

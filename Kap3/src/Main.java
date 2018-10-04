@@ -34,9 +34,11 @@ public class Main {
 */
 
         Integer[] i = {null,2,6,null,0,5};
-        EnkeltLenketListe ell = new EnkeltLenketListe(i);
-
-        System.out.println(ell.inneholder(2));
+        Liste<Integer> ell = new EnkeltLenketListe<>();
+        for (int j = 0; j < 10; j++) {
+            ell.leggInn(j + 1);
+        }
+        ell.forEach(x -> System.out.println(x + " "));
 
     }
 }
