@@ -124,5 +124,13 @@ public class Main {
         //Kap 3
         //Oppgave ..
 
+        Kø<Integer> kø = new EnkeltLenketListe<>();
+
+        for (int i = 1; i <= 10; i++) kø.leggInn(i);
+
+        while (!kø.tom())
+        {
+            System.out.print(kø.taUt() + " ");
+        }
     }
 }
